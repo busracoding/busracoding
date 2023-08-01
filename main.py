@@ -1,49 +1,56 @@
-from turtle import Screen
-from snake import Snake
-from food import Food
-from scoreboard import Scoreboard
+from turtle import Screen, Turtle
+from paddle import Paddle, Ball, Scoreboard
 import time
 
+
 screen = Screen()
-screen.setup(width=600, height=600)
-screen.bgcolor("green")
-screen.title("Nokia3310 Snake Game")
+screen.setup(width=800, height=600)
+screen.bgcolor("black")
+screen.title("PingPong")
 screen.tracer(0)
 
-snake = Snake()
-food = Food()
+r_paddle = Paddle((350, 0))
+l_paddle = Paddle((-350, 0))
+ball = Ball()
 scoreboard = Scoreboard()
 
 screen.listen()
-screen.onkey(snake.up, "Up")
-screen.onkey(snake.down, "Down")
-screen.onkey(snake.left, "Left")
-screen.onkey(snake.right, "Right")
+screen.onkey(r_paddle.go_up, "Up")
+screen.onkey(r_paddle.go_down, "Down")
+screen.onkey(l_paddle.go_up, "w")
+screen.onkey(l_paddle.go_down, "s")
 
+center_line = Turtle()
+center_line.speed(0)
+center_line.shape("square")
+center_line.color("yellow")
+center_line.shapesize(stretch_len= .1, stretch_wid=25) #w = 500px = 25*20px default
+center_line.penup()
 
 game_is_on = True
 while game_is_on:
+    time.sleep(ball.move_speed)
     screen.update()
-    time.sleep(0.05)
-    assert isinstance(snake, object)
-    snake.move()
+    ball.move()
 
-    # detect collision of snake with food
-    if snake.head.distance(food) < 15:
-        food.refresh()
-        snake.extend()
-        scoreboard.count_score()
-        
-    # detect collision with the wall
-    if snake.head.xcor() > 290 or snake.head.xcor() < -295 or snake.head.ycor() > 300 or snake.head.ycor() < -290:
-        game_is_on = False
-        scoreboard.game_over()
+    # detect collision with wall
+    if ball.ycor() < - 280 or ball.ycor() > 280:
+        ball.bounce_y()
 
-    # detect collision with the tail
-    for segment in snake.segments[1:]:
-        if snake.head.distance(segment) < 10:
-            game_is_on = False
-            scoreboard.game_over()
+    # detect collision with right paddle
+    if ball.distance(r_paddle) < 50 and ball.xcor() > 320 or ball.distance(l_paddle) < 50 and ball.xcor() < -320:
+        ball.bounce_x()
+
+
+    # detect right paddle misses the ball
+    if ball.xcor() > 380:
+        ball.reset_position()
+        scoreboard.l_point()
+
+    # detect right paddle misses the ball
+    if ball.xcor() < -380:
+        ball.reset_position()
+        scoreboard.r_point()
 
 
 screen.exitonclick()
