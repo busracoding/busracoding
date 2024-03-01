@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @busracoding . Im studying electrical and electronics engineering at Bilkent University.
-- 👀 I’m currently interested in machine learning, artifical intelligence, data science and quantum computing.
-- 🌱 I’m currently learning python.
+- 👀 I’m currently interested in image processing, FPGA implementation and quantum computing.
+- 🌱 I’m currently learning VHDL and C. 
 - 📫 How to reach me: busra.cam@ug.bilkent.edu.tr
 
 <!---
